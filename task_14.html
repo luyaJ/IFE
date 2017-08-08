@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>task_14</title>
+</head>
+<body>
+<!-- 
+	给前三名城市排序
+ -->
+<h3>污染城市列表</h3>
+<ul id="list">
+</ul>
+
+<script>
+    var airData = [
+        ['北京',90],
+        ["上海", 50],
+        ["福州", 10],
+        ["广州", 50],
+        ["成都", 90],
+        ["西安", 100]
+    ];
+
+    window.onload = function(){
+
+        var ul = document.getElementById('list');
+        airData.sort(function (a,b) {
+            return b[1]-a[1];
+        });
+        for(var i=0;i<airData.length;i++){
+            if(airData[i][1] > 60){
+                var li = document.createElement('li');
+                li.innerHTML = "第" + (i+1) + "名:" + airData[i][0] + "," +airData[i][1] ;
+                ul.appendChild(li);
+            }
+        }
+    }
+</script>
+</body>
+</html>
