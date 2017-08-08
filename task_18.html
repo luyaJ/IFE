@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>task_18</title>
+    <style>
+        .li{
+            display: inline-block;
+            height: 30px;
+            background: #f8bb00;
+            text-align: center;
+            color: white;
+            line-height: 30px;
+            margin: 10px;
+            padding: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<!--
+题目：模拟一个队列，队列的每个元素是一个数字，初始队列为空
+有一个input输入框，以及4个操作按钮
+点击"左侧入"，将input中输入的数字从左侧插入队列中；
+点击"右侧入"，将input中输入的数字从右侧插入队列中；
+点击"左侧出"，读取并删除队列左侧第一个元素，并弹窗显示元素中数值；
+点击"右侧出"，读取并删除队列又侧第一个元素，并弹窗显示元素中数值；
+点击队列中任何一个元素，则该元素会被从队列中删除
+-->
+<input id="input" type="text" />
+<button id="leftIn">左侧入</button>
+<button id="rightIn">右侧入</button>
+<button id="leftOut">左侧出</button>
+<button id="rightOut">右侧出</button><br>
+<ul id="demo">
+    <!--
+    <li>10</li>
+    -->
+</ul>
+
+<script>
+    window.onload = init;
+    function init() {
+        var input = document.getElementById('input');
+        var demo = document.getElementById('demo');
+
+        /**右侧入**/
+        var rightIn = document.getElementById('rightIn');
+        rightIn.onclick = function() {
+            if(/^[0-9]+$/.test(input.value)){
+                var li = document.createElement('li');
+                demo.appendChild(li);
+                li.setAttribute('class','li');
+                li.innerHTML = input.value;
+            } else {
+                alert("输入有误！");
+            }
+        }
+
+        /**左侧入**/
+        var leftIn = document.getElementById('leftIn');
+        leftIn.onclick = function() {
+            if(/^[0-9]+$/.test(input.value)){
+                var li = document.createElement('li');
+                demo.appendChild(li);
+                li.setAttribute('class','li');
+                demo.insertBefore(li,demo.childNodes[0]);
+                li.innerHTML = input.value;
+            } else {
+                alert("输入有误！");
+            }
+
+        }
+
+        /**左侧出**/
+        var leftOut = document.getElementById('leftOut');
+        leftOut.onclick = function() {   //shift删除第一个元素
+            if(demo.firstElementChild){
+                alert("删除左侧第一个元素的值为:" + demo.firstElementChild.innerHTML);
+                demo.removeChild(demo.firstElementChild);
+            } else {
+                alert("没有东西给你删除了哟~");
+            }
+        }
+
+        /**右侧出**/
+        var rightOut = document.getElementById('rightOut');
+        rightOut.onclick = function() {   //pop删除最后一个元素
+            if(demo.lastElementChild){
+                alert("删除右侧第一个元素的值为:" + demo.lastElementChild.innerHTML);
+                demo.removeChild(demo.lastElementChild);
+            } else {
+                alert("没有东西给你删除了哟~");
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
