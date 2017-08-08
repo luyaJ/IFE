@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>task_16</title>
+</head>
+<body>
+<!-- 
+输入城市名称和空气质量指数，以表格的形式输出 
+-->
+<div>
+    <label>城市名称：<input id="aqi-city-input" type="text"></label><br>
+    <label>空气质量指数：<input id="aqi-value-input" type="text"></label><br>
+    <button id="add-btn">确认添加</button>
+</div>
+<table id="aqi-table">
+    <!--
+      <tr>
+        <td>城市</td><td>空气质量</td><td>操作</td>
+      </tr>
+      <tr>
+        <td>北京</td><td>90</td><td><button>删除</button></td>
+      </tr>
+      <tr>
+        <td>北京</td><td>90</td><td><button>删除</button></td>
+      </tr>
+     -->
+</table>
+
+<script>
+    var aqiData = {};
+
+    function addAqiData(){
+
+        var city = document.getElementById('aqi-city-input').value;
+        var value= document.getElementById('aqi-value-input').value;
+        var str = "";
+        if(!/^[\u4e00-\u9fa5a-zA-Z]+$/.test(city))  //[\u4e00-\u9fa5]这个指中文字符
+            str += '请输入正确的城市名';
+        if(!/^[0-9]+$/.test(value))
+            str += '请输入正确的数字';
+        if(!str)
+            aqiData[city] = value;
+        else
+            alert(str);
+
+    }
+
+    function renderAqiList() {
+        var str = '<tr><td>城市</td><td>空气质量</td><td>操作</td></tr>';
+        for(var property in aqiData){
+            str += "<tr><td>" + property + "</td><td>" + aqiData[property] + "</td ><td><button id = '"+property+"'>删除</button></td></tr>";
+        }
+        str += "</table>";
+        document.getElementById("aqi-table").innerHTML = str;
+    }
+
+    function btnHandle() {
+        addAqiData();
+        renderAqiList();
+    }
+
+    function delBtnHandle(property) {
+        delete aqiData[property];
+        renderAqiList();
+    }
+
+    function init() {
+        var btn = document.getElementById('add-btn');
+        btn.attachEvent?btn.attachEvent("onclick",btnHandle):btn.addEventListener("click",btnHandle);
+
+        var table = document.getElementById("aqi-table");
+        if(table.attachEvent){
+            table.attachEvent("onclick",function(){
+                var event = window.event;
+                event.srcElement.nodeName.toLowerCase() == "button" ? delBtnHandle(event.srcElement.getAttribute("id")) : "";
+            });
+        } else {
+            table.addEventListener("click", function (event) {
+                event.target.nodeName.toLowerCase() == "button" ? delBtnHandle(event.target.getAttribute("id")) : "";
+            });
+        }
+    }
+
+    init();
+
+</script>
+
+</body>
+</html>
