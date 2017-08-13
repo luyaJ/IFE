@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>task_30</title>
+    <style>
+        *{
+            font-family: '微软雅黑';
+        }
+        div{
+            text-align: center;
+        }
+        label{
+            font-weight: bold;
+            font-size: 22px;
+            display: inline-block;
+            width: 140px;
+        }
+        input{
+            border-radius: 5px;
+            height: 24px;
+            width: 240px;
+            border: 1px solid #ccc;
+        }
+        p{
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+<!--
+表单获得焦点时，下方显示表单填写规则
+表单失去焦点时校验表单内容
+校验结果正确时，表单边框显示绿色，并在下方显示验证通过的描述文字
+校验结果错误时，表单边框显示红色，并在下方显示验证错误的描述文字
+点击提交按钮时，对页面中所有输入进行校验，校验结果显示方式同上。若所有表单校验通过，弹窗显示“提交成功”，否则显示“提交失败”
+-->
+<div>
+    <label>姓名：</label><input type="text" /> <p></p>
+    <label>密码：</label><input type="password" /> <p></p>
+    <label>密码确认：</label><input type="password"> <p></p>
+    <label>邮箱：</label><input type="email" /> <p></p>
+    <label>手机：</label><input type="text" /> <p></p>
+    <button>提交</button>
+</div>
+<script>
+
+    window.onload = function(){
+        //点击button函数
+        var btn = document.getElementsByTagName('button')[0];
+        btn.onclick = function () {
+            var pList = document.getElementsByTagName('p');
+            for(var i = 0 ; i < pList.length ; i++){
+                if(pList[i].style.color != 'green'){
+                    alert('输入有误,按确定后返回检查');
+                    return;
+                }
+            }
+            alert('验证成功');
+        }
+        confirmName();
+        confirmPsw();
+        confirmPsw2();
+        confirmEmail();
+        confirmPhone();
+    }
+
+    //验证姓名
+    function confirmName() {
+        var name = document.getElementsByTagName('input')[0];
+        var nameP = document.getElementsByTagName('p')[0];
+        name.onfocus = function () {
+            nameP.innerHTML = "请输入长度为4~16位字符";
+        }
+        name.onblur = function () {
+            if(countLength(name.value) == 0){
+                nameP.innerHTML = "姓名不能为空";
+                nameP.style.color = "red";
+                name.style.borderColor = "red";
+            } else if(countLength(name.value) >= 4 && countLength(name.value) <= 16){
+                nameP.innerHTML = "格式正确";
+                nameP.style.color = "green";
+                name.style.borderColor = "green";
+            } else {
+                nameP.innerHTML = "请输入长度为4~16位字符";
+                nameP.style.color = "red";
+                name.style.borderColor = "red";
+            }
+        }
+    }
+    function countLength(str) {
+        var inputLength = 0;
+        for(var i = 0 ; i < str.length ; i++){
+            var countCode = str.charCodeAt(i);
+            if(countCode >= 0 && countCode <= 128){
+                inputLength += 1;
+            } else {
+                inputLength += 2;
+            }
+        }
+        return inputLength;
+    }
+
+    //验证密码
+    function confirmPsw() {
+        var psw = document.getElementsByTagName('input')[1];
+        var pswP = document.getElementsByTagName('p')[1];
+        psw.onfocus = function () {
+            pswP.innerHTML = "请输入6~16位密码";
+        }
+        psw.onblur = function () {
+            if(psw.value.length >= 6 && psw.value.length <=16){
+                pswP.innerHTML = "格式正确";
+                pswP.style.color = "green";
+                psw.style.borderColor = "green";
+            } else {
+                pswP.innerHTML = "请输入6~16位密码";
+                pswP.style.color = "red";
+                psw.style.borderColor = "red";
+            }
+        }
+    }
+
+    //确认密码
+    function confirmPsw2() {
+        var cpsw = document.getElementsByTagName('input')[2];
+        var cpswP = document.getElementsByTagName('p')[2];
+        cpsw.onfocus = function () {
+            cpswP.innerHTML = "请再次输入密码";
+
+        }
+        cpsw.onblur = function () {
+            if(cpsw.value == ""){
+                cpswP.innerHTML = "密码不能为空";
+                cpswP.style.color = "red";
+                cpsw.style.borderColor = "red";
+            } else if(cpsw.value == document.getElementsByTagName('input')[1].value){
+                cpswP.innerHTML = "密码一致";
+                cpswP.style.color = "green";
+                cpsw.style.borderColor = "green";
+            } else {
+                cpswP.innerHTML = "密码不一致";
+                cpswP.style.color = "red";
+                cpsw.style.borderColor = "red";
+            }
+        }
+    }
+
+    //验证邮箱
+    function confirmEmail() {
+        var email = document.getElementsByTagName('input')[3];
+        var emailP = document.getElementsByTagName('p')[3];
+        var emailReg = /^[a-zA-Z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+        email.onfocus = function () {
+            emailP.innerHTML = "请输入邮箱地址";
+        }
+        email.onblur = function () {
+            if(emailReg.test(email.value)){
+                emailP.innerHTML = "邮箱格式正确";
+                emailP.style.color = "green";
+                email.style.borderColor = "green";
+            } else {
+                emailP.innerHTML = "您的电子邮箱地址不正确";
+                emailP.style.color = "red";
+                email.style.borderColor = "red";
+            }
+        }
+    }
+
+    //验证手机号
+    /** 移动号码段:139、138、137、136、135、134 ; 147 ; 150、151、152、157、158、159 ; 182、183、187、188
+     *  联通号码段:130、131、132、136 ; 145 ; 156 ; 185、186
+     *  电信号码段:133 ; 153 ; 180、181、189
+     **/
+    function confirmPhone() {
+        var phone = document.getElementsByTagName('input')[4];
+        var phoneP = document.getElementsByTagName('p')[4];
+        var phoneReg = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+        phone.onfocus = function () {
+            phoneP.innerHTML = "请输入11位手机号";
+        }
+        phone.onblur = function () {
+            if(phoneReg.test(phone.value)){
+                phoneP.innerHTML = "手机验证正确";
+                phoneP.style.color = "green";
+                phone.style.borderColor = "green";
+            } else {
+                phoneP.innerHTML = "手机号不正确";
+                phoneP.style.color = "red";
+                phone.style.borderColor = "red";
+            }
+        }
+    }
+
+
+
+</script>
+</body>
+</html>
